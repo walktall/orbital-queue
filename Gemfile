@@ -55,3 +55,7 @@ gem "slim-rails"
 
 gem 'bootstrap'
 
+
+# For heroku
+ruby "2.5.1"
+
