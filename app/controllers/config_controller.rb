@@ -1,5 +1,6 @@
 class ConfigController < ApplicationController
   def new
+    @config = JsonConfig.new
   end
 
   def create
