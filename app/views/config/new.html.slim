@@ -1,7 +1,8 @@
-h2 Obital Json Config Generator
+h2 Obital Config Generator
+br
 
 
-= simple_form_for @config, url: 'config/create', method: :post do |f|
+= simple_form_for @config, url: config_index_path, method: :post do |f|
   = f.input :city_id, label: 'City ID', hint: 'City ID on Gamma', as: :integer, required: true
   = f.input :city_name, hint: 'Time zone string on gamma', placeholder: 'e.g. Asia/Kuala_Lumpur', required: true
   = f.input :location_id, label: 'Location ID', as: :integer, required: true,
