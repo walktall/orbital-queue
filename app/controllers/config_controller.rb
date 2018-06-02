@@ -4,9 +4,8 @@ class ConfigController < ApplicationController
   end
 
   def create
-    byebug
     @config = JsonConfig.new(params.require(:json_config).permit!)
-    render 'new'
+    flash[:notice] = 'Config generated successfully:'
   end
 
   def show

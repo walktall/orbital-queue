@@ -39,23 +39,82 @@ class JsonConfig < AbstractModel
 
   # The key mapping of the json config keys to attributes
   # e.g.  { locID: :location_id } means the "locID" in the json config maps to attribute location_id
-  JSON_KEY_MAPPING = {
+  JSON_KEY_MAP = {
     locID: :location_id,
     cityID: :city_id,
     cityName: :city_name,
     locationName: :location_name,
-    vehicleTypes: :vehicle_types,
-    pickUpGeo: :pick_up_geo_array,
-    bayAreaGeo: :bay_area_geo_array,
+    # TODO:
+    # vehicleTypes: :vehicle_types,
+    pickUpGeo: :pickup_area_geo,
+    bayAreaGeo: :bay_area_geo,
     vehicleTypeNames: :vehicle_type_names,
+    message: {
+        messageContent:
+            {
+                alert_msg: :alert_message,
+                update_msg: :update_message,
+                welcome_msg: :welcome_message,
+                welcomeback_msg: :welcome_back_message,
+                remind_msg: :out_of_queue_remind_message,
+                out_of_queue_msg: :out_of_queue_message,
+            },
+        rangeTemplate: :range_template,
+        rangeTemplateWithEta: :range_template_with_eta,
+        readMore: :readmore_link,
+    },
+
+    queueSpec: {
+        queuePositionMultiple: :queue_position_multiple,
+        queuePositionDynamicMultiple: :queue_position_dynamic_multiple,
+        ignoreQuota: :ignore_quota,
+        mercyPeriodInSec: :mercy_period_in_sec,
+        paxCancelRecordTTLInSec: :pax_cancel_record_ttl_in_sec,
+        remindSnoozeTimeInSec: :remind_snooze_time_in_sec,
+        remindBeforeInSec: :remind_before_in_sec,
+    }
   }
 
+  # Serialize config object to JSON string
   def serialize_to_json
     hash = {}
-    hash[:locID] = location_id
-    hash[:cityID] = city_id
-    hash[:cityName] = city_name
+    walk_key_map(JSON_KEY_MAP, hash)
 
+    JSON.pretty_generate(hash)
+  end
 
+  # Construct config object from JSON
+  def deserialize_from_json(str)
+    raw_hash = JSON.parse(str)
+    walk_key_map_reverse(JSON_KEY_MAP, ActiveSupport::HashWithIndifferentAccess.new(raw_hash))
+    self
+  end
+
+  private
+
+  def walk_key_map(map, hash)
+    map.each_key do |k|
+      v = map[k]
+      if v.is_a?(Symbol)
+        # assign value
+        hash[k] = send(v)
+      else
+        hash[k] = {} unless hash[k]
+        walk_key_map(map[k], hash[k])
+      end
+    end
+  end
+
+  def walk_key_map_reverse(map, hash)
+    map.each_key do |k|
+      v = map[k]
+      if v.is_a?(Symbol)
+        # restore value
+        send("#{v}=", hash[k])
+      else
+        next unless hash[k]
+        walk_key_map_reverse(map[k], hash[k])
+      end
+    end
   end
 end
