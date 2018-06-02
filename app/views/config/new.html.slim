@@ -8,7 +8,7 @@ br
   = f.input :location_id, label: 'Location ID', as: :integer, required: true,
           placeholder: "Can be any unique positive integer, as long as it's unique among all the locations"
   = f.input :location_name, required: true, placeholder: 'e.g. KILA', hint: 'Your custom location name'
-  = f.input :vehicle_types, as: :text, required: true
+  = f.input :vehicle_type_names, label: 'Vehicle type and names', as: :text, required: true
   = f.input :pickup_area_geo, required: true,
           hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
           placeholder: 'e.g. w22r96, w22r97'
@@ -52,7 +52,7 @@ br
   = f.input :welcome_message, required: true, placeholder: 'e.g. [GRAB] Welcome to KILA.'
   = f.input :welcome_back_message, required: true, label: 'Welcome With Pax Cancel Message',
           placeholder: 'e.g. [GRAB] Because passenger has cancelled, you are back in queue. Your current position is:'
-  = f.input :update_message, required: true, placeholder: 'e.g. Your queue number at KILA is: '
+  = f.input :update_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KILA is: '
   = f.input :alert_message, required: true, placeholder: 'e.g. [GRAB] Your KILA Queue number has changed to: '
   = f.input :out_of_queue_message, required: true, placeholder: 'e.g. [GRAB] You are out of the Queue. You can rejoin by coming back to the queue area.'
   = f.input :out_of_queue_remind_message, required: true, placeholder: 'e.g. [GRAB] You are outside the queue. Please return to the queue within 5 minutes to maintain the original queue'
