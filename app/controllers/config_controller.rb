@@ -6,6 +6,7 @@ class ConfigController < ApplicationController
   def create
     byebug
     @config = JsonConfig.new(params.require(:json_config).permit!)
+    render 'new'
   end
 
   def show

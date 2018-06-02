@@ -5,8 +5,8 @@ class JsonConfig < AbstractModel
   attribute :city_name, :string
   attribute :location_name, :string
   attribute :vehicle_type_names, :text
-  attribute :pickup_area_geo, :string
-  attribute :bay_area_geo, :string
+  attribute :pickup_area_geo, Types::GeohashArray.new
+  attribute :bay_area_geo, Types::GeohashArray.new
 
   attribute :welcome_message, :string
   attribute :welcome_back_message, :string
