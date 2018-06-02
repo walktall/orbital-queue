@@ -10,9 +10,11 @@ br
   = f.input :location_name, required: true, placeholder: 'e.g. KILA', hint: 'Your custom location name'
   = f.input :vehicle_type_names, label: 'Vehicle type and names', required: true
   = f.input :pickup_area_geo, required: true,
+          input_html: { value: ::Types::GeohashArray.new.deserialize(@config.pickup_area_geo) },
           hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
           placeholder: 'e.g. w22r96, w22r97'
   = f.input :bay_area_geo, required: true,
+          input_html: { value: ::Types::GeohashArray.new.deserialize(@config.bay_area_geo) },
           hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
           placeholder: 'e.g. w22r61, w22r63'
 

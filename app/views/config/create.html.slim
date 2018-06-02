@@ -1,2 +1,5 @@
+- json = @config.serialize_to_json
 pre
-  = @config.serialize_to_json
+  = json
+
+= link_to 'Modify Again', new_config_path(restore_from: json)
