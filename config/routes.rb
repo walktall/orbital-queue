@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'config/new'
+
+  get 'config/create'
+
+  get 'config/show'
+
   get 'home/index'
   root 'home#index'
 
