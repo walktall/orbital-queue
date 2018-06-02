@@ -35,6 +35,8 @@ class AbstractModel < ApplicationRecord
           return ActiveRecord::Type::Integer.new
         when :string
           return ActiveRecord::Type::String.new
+        when :text
+          return ActiveRecord::Type::Text.new
         else
           raise "Unknown type: #{type}"
       end
