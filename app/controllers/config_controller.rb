@@ -8,7 +8,7 @@ class ConfigController < ApplicationController
 
   def create
     @config = JsonConfig.new(params.require(:json_config).permit!)
-    flash[:notice] = 'Config generated successfully:'
+    flash.now[:notice] = 'Config generated successfully:'
   end
 
   def show
