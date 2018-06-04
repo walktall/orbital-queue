@@ -3,7 +3,6 @@ class JsonConfig < AbstractModel
 
   attribute :location_id, :integer
   attribute :city_id, :integer
-  attribute :country, :string
   attribute :city_name, :string
   attribute :location_name, :string
   attribute :vehicle_type_names, Types::ValuePair.new
@@ -38,6 +37,11 @@ class JsonConfig < AbstractModel
   attribute :remind_snooze_time_in_sec, :integer, default: 180
   # When will the remind msg be sent if drivers are in danger of getting kicked out
   attribute :remind_before_in_sec, :integer, default: 180
+
+  validates :location_id, :city_id, :city_name, :location_name, :vehicle_type_names, :pickup_area_geo, :bay_area_geo, presence: true
+  validates :welcome_message, :welcome_back_message, :out_of_queue_remind_message, :out_of_queue_message, :alert_message, :update_message, presence: true
+  validates :range_template, presence: true
+  validate :geohashes_should_not_contain_invalid_chars, :vehicle_type_and_names_format, :queue_position_dynamic_multiple_format
 
   # The key mapping of the json config keys to attributes
   # e.g.  { locID: :location_id } means the "locID" in the json config maps to attribute location_id
@@ -103,6 +107,10 @@ class JsonConfig < AbstractModel
     self
   end
 
+  def value_from_user_input(attr)
+    JsonConfig.type_for_attribute(attr.to_s).deserialize(send(attr))
+  end
+
   private
 
   def walk_key_map(map, hash)
@@ -135,6 +143,54 @@ class JsonConfig < AbstractModel
     self.vehicle_types = []
     if vehicle_type_names.is_a?(Hash)
       self.vehicle_types = vehicle_type_names.keys.map { |k| k.to_i }
+    end
+  end
+
+  def geohashes_should_not_contain_invalid_chars
+    # validates :pickup_area_geo, :bay_area_geo, format: { with: /\A[0-9a-zA-Z\d\s]+\z/i, message: '' }
+    str = 'only allows digits and letters, quotes and other characters are not allowed'
+    regex = /\A(\s*,?[0-9a-zA-Z\d]+\s*,?\s*)+\z/i
+    v = value_from_user_input(:pickup_area_geo)
+    if v.present? && !v.match(regex)
+      errors.add(:pickup_area_geo, str)
+    end
+
+    v = value_from_user_input(:bay_area_geo)
+    if v.present? && !v.match(regex)
+      errors.add(:bay_area_geo, str)
+    end
+  end
+
+  def vehicle_type_and_names_format
+    return if !vehicle_type_names || vehicle_type_names.is_a?(Hash)
+    begin
+      JSON.parse(value_from_user_input(:vehicle_type_names))
+    rescue Exception => e
+      errors.add(:vehicle_type_names, 'is invalid, JSON parsing error: ' + e.to_s)
+    end
+
+    if !vehicle_type_names.is_a?(Hash) && errors[:vehicle_type_names].empty?
+      errors.add(:vehicle_type_names, 'is invalid, must be in the format of "vehicle type id": "Name"')
+    end
+  end
+
+
+  def queue_position_dynamic_multiple_format
+    return if !queue_position_dynamic_multiple
+    return if queue_position_dynamic_multiple.is_a?(Hash) && queue_position_dynamic_multiple.empty?
+    
+    if !queue_position_dynamic_multiple.is_a?(Hash)
+      begin
+        JSON.parse(value_from_user_input(:queue_position_dynamic_multiple))
+      rescue Exception => e
+        errors.add(:queue_position_dynamic_multiple, 'is invalid, JSON parsing error: ' + e.to_s)
+      end
+    end
+
+    if errors[:queue_position_dynamic_multiple].empty?
+      if !queue_position_dynamic_multiple.is_a?(Hash) || !queue_position_dynamic_multiple.first[1].is_a?(Integer)
+          errors.add(:queue_position_dynamic_multiple, 'is invalid, must be in the format of "number": number')
+      end
     end
   end
 end
