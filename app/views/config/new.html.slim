@@ -12,7 +12,9 @@ br
           placeholder: "Can be any unique positive integer, as long as it's unique among all the locations"
   = f.input :location_name, required: true, placeholder: 'e.g. KILA', hint: 'Your custom location name'
   = f.input :vehicle_type_names, label: 'Vehicle type and names', required: true,
-          input_html: { value: display_value_for(:vehicle_type_names) }
+          input_html: { value: display_value_for(:vehicle_type_names) },
+          placeholder: 'e.g. "302": "JustGrab - Airport", "400": "Taxi - Airport"',
+          hint: 'Comma separated pairs with the key of taxi type ID and value of the name. The name will be used in the notifications.'
   = f.input :pickup_area_geo, required: true,
           input_html: { value: display_value_for(:pickup_area_geo) },
           hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
@@ -32,14 +34,17 @@ br
 
   = f.input :queue_position_dynamic_multiple,
           input_html: { value: display_value_for(:queue_position_dynamic_multiple) },
-          placeholder: '(Leave blank to use disable the feature). e.g. "200": 50, "500": 100',
-          hint: '(Optional) Comma separated range and multiple pairs. The frequency of the notifications based on current position of drivers'
+          placeholder: "e.g. \"200\": 50, \"500\": 100\n(Leave blank to disable the feature, recommend to set this for very large queues).",
+          hint: "(Optional) Comma separated pairs with the value of queue position and the key of the length of the range.\
+          This defines the frequency of the notifications based on current position of drivers. e.g. \"500\": 100 means when the\
+          queue position of driver is greater than 500, we will send a update message to the driver when his position number has change\
+          by 100."
 
   = f.input :ignore_quota,
           placeholder: 'Leave blank to use the default value: 2',
           hint: 'Number of ignored booking to reset driver\'s position in queue'
   = f.input :mercy_period_in_sec,
-          placeholder: 'Leave blank to use the default value: 900',
+          placeholder: 'Leave blank to use the default value: 300',
           hint: 'Number of seconds after the driver turn off app and to be moved to the last of queue / Number of minutes after dax moving out of X area and move to the last of queue'
   = f.input :pax_cancel_record_ttl_in_sec,
           placeholder: 'Leave blank to use the default value: 900',

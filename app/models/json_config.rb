@@ -30,7 +30,7 @@ class JsonConfig < AbstractModel
   attribute :ignore_quota, :integer, default: 2
   # Number of seconds after the driver turn off app and to be moved to the last of queue / Number of minutes after dax moving out
   # of X area and move to the last of queue
-  attribute :mercy_period_in_sec, :integer, default: 900
+  attribute :mercy_period_in_sec, :integer, default: 300
   # Number of minutes for dax to come back to X after pax cancels
   attribute :pax_cancel_record_ttl_in_sec, :integer, default: 900
   # We will only send one notification in the snooze period
