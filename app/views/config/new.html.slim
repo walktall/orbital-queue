@@ -27,8 +27,8 @@ br
           hint: 'We will send a notification to driver after he has moved X positions in the queue. You may consider increasing this value for large queues.'
 
   = f.input :queue_position_dynamic_multiple,
-          placeholder: 'Leave blank to use disable the feature',
-          hint: '(Optional) The frequency of the notifications based on current position of drivers'
+          placeholder: '(Leave blank to use disable the feature). e.g. "200": 50, "500": 100',
+          hint: '(Optional) Comma separated range and multiple pairs. The frequency of the notifications based on current position of drivers'
 
   = f.input :ignore_quota,
           placeholder: 'Leave blank to use the default value: 2',
@@ -58,7 +58,11 @@ br
   = f.input :alert_message, required: true, placeholder: 'e.g. [GRAB] Your KILA Queue number has changed to: '
   = f.input :out_of_queue_message, required: true, placeholder: 'e.g. [GRAB] You are out of the Queue. You can rejoin by coming back to the queue area.'
   = f.input :out_of_queue_remind_message, required: true, placeholder: 'e.g. [GRAB] You are outside the queue. Please return to the queue within 5 minutes to maintain the original queue'
-  = f.input :range_template, required: true, placeholder: 'e.g. is between% d and% d'
+  = f.input :range_template, required: true, placeholder: 'e.g. [%d - %d]',
+          hint: 'A string for the range template, %d will be replaced with queue positions'
+  = f.input :range_template_with_eta, placeholder: 'e.g. [%d - %d]  (ETA: %d min) ',
+          hint: 'Similar to range_template with a extra field of ETA in minutes, only required if you want to enable the ETA feature'
+
   = f.input :readmore_link, placeholder: 'e.g. bit.ly/svbqueue'
 
   = f.button :submit, "Generate", class: "btn-success"

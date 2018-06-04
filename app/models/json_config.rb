@@ -1,10 +1,12 @@
 class JsonConfig < AbstractModel
+  attr_accessor :vehicle_types
+
   attribute :location_id, :integer
   attribute :city_id, :integer
   attribute :country, :string
   attribute :city_name, :string
   attribute :location_name, :string
-  attribute :vehicle_type_names, :text
+  attribute :vehicle_type_names, Types::ValuePair.new
   attribute :pickup_area_geo, Types::GeohashArray.new
   attribute :bay_area_geo, Types::GeohashArray.new
 
@@ -23,7 +25,7 @@ class JsonConfig < AbstractModel
   # Integer, Send a message to driver after he has moved X positions in the queue.
   attribute :queue_position_multiple, :integer, :default => 5
   # Hash, The frequency of the notification based on current position of drivers
-  attribute :queue_position_dynamic_multiple, :text
+  attribute :queue_position_dynamic_multiple, Types::ValuePair.new
   # Number of ignored booking to reset Driver's position in queue
   attribute :ignore_quota, :integer, default: 2
   # Number of seconds after the driver turn off app and to be moved to the last of queue / Number of minutes after dax moving out
@@ -44,8 +46,7 @@ class JsonConfig < AbstractModel
     cityID: :city_id,
     cityName: :city_name,
     locationName: :location_name,
-    # TODO:
-    # vehicleTypes: :vehicle_types,
+    vehicleTypes: :vehicle_types,
     pickUpGeo: :pickup_area_geo,
     bayAreaGeo: :bay_area_geo,
     vehicleTypeNames: :vehicle_type_names,
@@ -77,6 +78,8 @@ class JsonConfig < AbstractModel
 
   # Serialize config object to JSON string
   def serialize_to_json
+    generate_vehicle_types()
+
     hash = {}
     walk_key_map(JSON_KEY_MAP, hash)
 
@@ -115,6 +118,13 @@ class JsonConfig < AbstractModel
         next unless hash[k]
         walk_key_map_reverse(map[k], hash[k])
       end
+    end
+  end
+
+  def generate_vehicle_types
+    self.vehicle_types = []
+    if vehicle_type_names.is_a?(Hash)
+      self.vehicle_types = vehicle_type_names.keys.map { |k| k.to_i }
     end
   end
 end
