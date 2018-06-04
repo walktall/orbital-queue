@@ -1,2 +1,8 @@
-h1 Config#show
-p Find me in app/views/config/show.html.slim
+- json = @config ? @config.serialize_to_json : ""
+
+
+= simple_form_for :config, url: new_config_path, method: :get do |f|
+  = f.input :json, label: false, required: false, as: :text,
+          placeholder: 'Paste the generated JSON here',
+          input_html: {value: json, rows: json.present? ? json.lines.count : 15}
+  = f.button :submit, "Modify Again", class: "btn-info"

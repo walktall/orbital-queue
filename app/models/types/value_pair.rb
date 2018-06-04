@@ -3,7 +3,9 @@ module Types
     # db format to user input (string)
     def deserialize(value)
       if value.is_a?(Hash)
-        value.to_json
+        json = JSON.pretty_generate(value)
+        # Remove `{` and `}`
+        json.split("\n")[1...-1].map { |row| row.strip }.join("\n")
       else
         super
       end

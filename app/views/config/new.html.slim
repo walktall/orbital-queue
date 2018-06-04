@@ -1,6 +1,9 @@
 h2 Obital Config Generator
-br
 
+div
+  span Already have a generated JSON config?&nbsp
+  span = link_to 'Load and modify existing config', config_path(0)
+br
 
 = simple_form_for @config, url: config_index_path, method: :post do |f|
   = f.input :city_id, label: 'City ID', hint: 'City ID on Gamma', required: true
@@ -8,7 +11,8 @@ br
   = f.input :location_id, label: 'Location ID', as: :integer, required: true,
           placeholder: "Can be any unique positive integer, as long as it's unique among all the locations"
   = f.input :location_name, required: true, placeholder: 'e.g. KILA', hint: 'Your custom location name'
-  = f.input :vehicle_type_names, label: 'Vehicle type and names', required: true
+  = f.input :vehicle_type_names, label: 'Vehicle type and names', required: true,
+          input_html: { value: display_value_for(:vehicle_type_names) }
   = f.input :pickup_area_geo, required: true,
           input_html: { value: display_value_for(:pickup_area_geo) },
           hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
@@ -27,6 +31,7 @@ br
           hint: 'We will send a notification to driver after he has moved X positions in the queue. You may consider increasing this value for large queues.'
 
   = f.input :queue_position_dynamic_multiple,
+          input_html: { value: display_value_for(:queue_position_dynamic_multiple) },
           placeholder: '(Leave blank to use disable the feature). e.g. "200": 50, "500": 100',
           hint: '(Optional) Comma separated range and multiple pairs. The frequency of the notifications based on current position of drivers'
 

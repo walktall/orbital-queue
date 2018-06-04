@@ -1,5 +1,6 @@
 - json = @config.serialize_to_json
-pre
-  = json
 
-= link_to 'Modify Again', new_config_path(restore_from: json)
+= simple_form_for :config, url: new_config_path, method: :get do |f|
+  = f.input :json, label: false, required: false, as: :text,
+          input_html: { value: json, rows: json.lines.count }
+  = f.button :submit, "Modify Again", class: "btn-info"

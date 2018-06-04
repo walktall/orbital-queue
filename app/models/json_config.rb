@@ -47,9 +47,9 @@ class JsonConfig < AbstractModel
     cityName: :city_name,
     locationName: :location_name,
     vehicleTypes: :vehicle_types,
+    vehicleTypeNames: :vehicle_type_names,
     pickUpGeo: :pickup_area_geo,
     bayAreaGeo: :bay_area_geo,
-    vehicleTypeNames: :vehicle_type_names,
     message: {
         messageContent:
             {
@@ -78,12 +78,22 @@ class JsonConfig < AbstractModel
 
   # Serialize config object to JSON string
   def serialize_to_json
+    hash = serialize_to_hash()
+
+    JSON.pretty_generate(hash)
+  end
+
+  def serialize_to_compact_json
+    serialize_to_hash().to_json
+  end
+
+  def serialize_to_hash
     generate_vehicle_types()
 
     hash = {}
     walk_key_map(JSON_KEY_MAP, hash)
 
-    JSON.pretty_generate(hash)
+    hash
   end
 
   # Construct config object from JSON
