@@ -1,4 +1,4 @@
-class JsonConfig < AbstractModel
+class OrbitalConfig < AbstractModel
   attr_accessor :vehicle_types
 
   attribute :location_id, :integer
@@ -108,7 +108,7 @@ class JsonConfig < AbstractModel
   end
 
   def value_from_user_input(attr)
-    JsonConfig.type_for_attribute(attr.to_s).deserialize(send(attr))
+    OrbitalConfig.type_for_attribute(attr.to_s).deserialize(send(attr))
   end
 
   private
@@ -178,7 +178,7 @@ class JsonConfig < AbstractModel
   def queue_position_dynamic_multiple_format
     return if !queue_position_dynamic_multiple
     return if queue_position_dynamic_multiple.is_a?(Hash) && queue_position_dynamic_multiple.empty?
-    
+
     if !queue_position_dynamic_multiple.is_a?(Hash)
       begin
         JSON.parse(value_from_user_input(:queue_position_dynamic_multiple))
