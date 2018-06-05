@@ -1,8 +1,15 @@
-- json = @config ? @config.serialize_to_json : ""
+- json = @config.serialize_to_json
+- url = config_pretty_display_url(@config)
+div
+  span You may share this config using the link:&nbsp
+  span= link_to url, url
 
+br
 
-= simple_form_for :config, url: new_config_path, method: :get do |f|
-  = f.input :json, label: false, required: false, as: :text,
-          placeholder: 'Paste the generated JSON here',
-          input_html: {value: json, rows: json.present? ? json.lines.count : 15}
-  = f.button :submit, "Modify Again", class: "btn-info"
+div.form-group
+  label for="disabledInput"
+    div
+      span Config:&nbsp
+      span = link_to "(Modify again)", edit_config_version_path(@config.uid, @config.version)
+  textarea.form-control#disabledInput rows="#{json.lines.count}" disabled="true"
+    = json

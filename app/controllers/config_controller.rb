@@ -1,4 +1,6 @@
 class ConfigController < ApplicationController
+  include ConfigHelper
+
   def new
     @config = OrbitalConfig.new
     if params[:config] && valid_json?(params[:config][:json])
@@ -6,21 +8,25 @@ class ConfigController < ApplicationController
     end
   end
 
-  def create
-    @config = OrbitalConfig.new(params.require(:json_config).permit!)
+  def edit
+    @config = load_config
+  end
 
-    if @config.valid?
-      redirect_to config_path(id: 0, config: @config.serialize_to_compact_json), notice: 'Config generated successfully:'
+  def create
+    @config = OrbitalConfig.new(params.require(:orbital_config).permit!)
+
+    if @config.save
+      redirect_to config_pretty_display_url(@config), notice: 'Config generated successfully:'
     else
       render 'new'
     end
   end
 
+  def restore
+  end
+
   def show
-    if params[:config]
-      @config = OrbitalConfig.new
-      @config.deserialize_from_json(params[:config])
-    end
+    @config = load_config
   end
 
   private
@@ -29,5 +35,11 @@ class ConfigController < ApplicationController
     !!JSON.parse(json)
   rescue JSON::ParserError => _e
     false
+  end
+
+  def load_config
+    @config = OrbitalConfig.find_by!(uid: params[:uid], version: (params[:version] || 0))
+    @config.deserialize_from_json(@config.data)
+    @config
   end
 end

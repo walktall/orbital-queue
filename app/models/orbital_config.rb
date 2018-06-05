@@ -1,4 +1,4 @@
-class OrbitalConfig < AbstractModel
+class OrbitalConfig < ApplicationRecord
   attr_accessor :vehicle_types
 
   attribute :location_id, :integer
@@ -20,7 +20,6 @@ class OrbitalConfig < AbstractModel
   attribute :range_template, :string
   attribute :range_template_with_eta, :string
 
-
   # Integer, Send a message to driver after he has moved X positions in the queue.
   attribute :queue_position_multiple, :integer, :default => 5
   # Hash, The frequency of the notification based on current position of drivers
@@ -40,7 +39,7 @@ class OrbitalConfig < AbstractModel
 
   validates :location_id, :city_id, :city_name, :location_name, :vehicle_type_names, :pickup_area_geo, :bay_area_geo, presence: true
   validates :welcome_message, :welcome_back_message, :out_of_queue_remind_message, :out_of_queue_message, :alert_message, :update_message, presence: true
-  validates :range_template, presence: true
+  validates :range_template, :range_template_with_eta, presence: true
   validate :geohashes_should_not_contain_invalid_chars, :vehicle_type_and_names_format, :queue_position_dynamic_multiple_format
 
   # The key mapping of the json config keys to attributes
@@ -98,6 +97,30 @@ class OrbitalConfig < AbstractModel
     walk_key_map(JSON_KEY_MAP, hash)
 
     hash
+  end
+
+
+  def generate_uid_and_version
+    if uid.present?
+      max_version = max_version_of(uid)
+      self.version = (max_version&.version || -1) + 1
+      return
+    end
+
+    self.uid = SecureRandom.base64(9).gsub('/', 'S')
+    self.version = 0
+
+  end
+
+  def save(*)
+    self.data = serialize_to_compact_json
+    if self.data == max_version_of(uid)&.data
+      # No need save
+      self.version = max_version_of(uid).version
+      return true
+    end
+    generate_uid_and_version
+    super
   end
 
   # Construct config object from JSON
@@ -192,5 +215,9 @@ class OrbitalConfig < AbstractModel
           errors.add(:queue_position_dynamic_multiple, 'is invalid, must be in the format of "number": number')
       end
     end
+  end
+
+  def max_version_of(uid)
+    @max_version ||= OrbitalConfig.where(uid: uid).order(version: :asc).last
   end
 end

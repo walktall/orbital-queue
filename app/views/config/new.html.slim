@@ -2,77 +2,7 @@ h2 Orbital Config Generator
 
 div
   span Already have a generated JSON config?&nbsp
-  span = link_to 'Load and modify existing config', config_path(0)
+  span = link_to 'Load and modify existing config', restore_config_path()
 br
 
-= simple_form_for @config, url: config_index_path, method: :post do |f|
-  = f.input :city_id, label: 'City ID', hint: 'City ID on Gamma', required: true
-  = f.input :city_name, hint: 'Time zone string on gamma', placeholder: 'e.g. Asia/Kuala_Lumpur', required: true
-  = f.input :location_id, label: 'Location ID', as: :integer, required: true,
-          placeholder: "Can be any unique positive integer, as long as it's unique among all the locations"
-  = f.input :location_name, required: true, placeholder: 'e.g. KILA', hint: 'Your custom location name'
-  = f.input :vehicle_type_names, label: 'Vehicle type and names', required: true,
-          input_html: { value: display_value_for(:vehicle_type_names) },
-          placeholder: 'e.g. "302": "JustGrab - Airport", "400": "Taxi - Airport"',
-          hint: 'Comma separated pairs with the key of taxi type ID and value of the name. The name will be used in the notifications.'
-  = f.input :pickup_area_geo, required: true,
-          input_html: { value: display_value_for(:pickup_area_geo) },
-          hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
-          placeholder: 'e.g. w22r96, w22r97'
-  = f.input :bay_area_geo, required: true,
-          input_html: {value: display_value_for(:bay_area_geo) },
-          hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
-          placeholder: 'e.g. w22r61, w22r63'
-
-  .badge.badge-light Notification Frequency
-  br
-  br
-
-  = f.input :queue_position_multiple,
-          placeholder: 'Leave blank to use the default value: 5',
-          hint: 'We will send a notification to driver after he has moved X positions in the queue. You may consider increasing this value for large queues.'
-
-  = f.input :queue_position_dynamic_multiple,
-          input_html: { value: display_value_for(:queue_position_dynamic_multiple) },
-          placeholder: "e.g. \"200\": 50, \"500\": 100\n(Leave blank to disable the feature, recommend to set this for very large queues).",
-          hint: "(Optional) Comma separated pairs with the value of queue position and the key of the length of the range.\
-          This defines the frequency of the notifications based on current position of drivers. e.g. \"500\": 100 means when the\
-          queue position of driver is greater than 500, we will send a update message to the driver when his position number has change\
-          by 100."
-
-  = f.input :ignore_quota,
-          placeholder: 'Leave blank to use the default value: 2',
-          hint: 'Number of ignored booking to reset driver\'s position in queue'
-  = f.input :mercy_period_in_sec,
-          placeholder: 'Leave blank to use the default value: 300',
-          hint: 'Number of seconds after the driver turn off app and to be moved to the last of queue / Number of minutes after dax moving out of X area and move to the last of queue'
-  = f.input :pax_cancel_record_ttl_in_sec,
-          placeholder: 'Leave blank to use the default value: 900',
-          hint: 'Number of minutes for dax to come back to X after pax cancels'
-  = f.input :remind_snooze_time_in_sec,
-          placeholder: 'Leave blank to use the default value: 60',
-          hint: 'We will only send one notification in the snooze period, e.g. If the driver get a reminder at 12:00 and the next reminder will be at 12:05 if this number is set to 5 mins.'
-
-  = f.input :remind_before_in_sec,
-          placeholder: 'Leave blank to use the default value: 180',
-          hint: 'When will the remind msg be sent if drivers are in danger of getting kicked out'
-
-  .badge.badge-light Notification Content
-  br
-  br
-
-  = f.input :welcome_message, required: true, placeholder: 'e.g. [GRAB] Welcome to KILA.'
-  = f.input :welcome_back_message, required: true, label: 'Welcome With Pax Cancel Message',
-          placeholder: 'e.g. [GRAB] Because passenger has cancelled, you are back in queue. Your current position is:'
-  = f.input :update_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KILA is: '
-  = f.input :alert_message, required: true, placeholder: 'e.g. [GRAB] Your KILA Queue number has changed to: '
-  = f.input :out_of_queue_message, required: true, placeholder: 'e.g. [GRAB] You are out of the Queue. You can rejoin by coming back to the queue area.'
-  = f.input :out_of_queue_remind_message, required: true, placeholder: 'e.g. [GRAB] You are outside the queue. Please return to the queue within 5 minutes to maintain the original queue'
-  = f.input :range_template, required: true, placeholder: 'e.g. [%d - %d]',
-          hint: 'A string for the range template, %d will be replaced with queue positions'
-  = f.input :range_template_with_eta, placeholder: 'e.g. [%d - %d]  (ETA: %d min) ',
-          hint: 'Similar to range_template with a extra field of ETA in minutes, only required if you want to enable the ETA feature'
-
-  = f.input :readmore_link, placeholder: 'e.g. bit.ly/svbqueue'
-
-  = f.button :submit, "Generate", class: "btn-success"
+= render 'form'
