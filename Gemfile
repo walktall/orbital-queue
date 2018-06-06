@@ -59,6 +59,7 @@ gem 'simple_form'
 
 gem 'diffy'
 gem 'clipboard-rails'
+gem 'jquery-rails'
 
 # For heroku
 ruby "2.5.1"
