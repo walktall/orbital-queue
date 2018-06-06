@@ -79,6 +79,10 @@ class OrbitalConfig < ApplicationRecord
     }
   }
 
+  def pretty_print_data
+    JSON.pretty_generate(JSON.parse(data))
+  end
+
   # Serialize config object to JSON string
   def serialize_to_json
     hash = serialize_to_hash()

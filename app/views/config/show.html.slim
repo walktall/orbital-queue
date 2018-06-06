@@ -13,3 +13,11 @@ div.form-group
       span = link_to "(Modify again)", edit_config_version_path(@config.uid, @config.version)
   textarea.form-control#disabledInput rows="#{json.lines.count}" disabled="true"
     = json
+
+
+style = Diffy::CSS
+
+- prev_config = @config.version > 0 ? OrbitalConfig.find_by(uid: @config.uid, version: @config.version - 1) : nil
+- if prev_config
+  p Changes made in this version:
+  div = Diffy::Diff.new(prev_config.pretty_print_data, @config.pretty_print_data).to_s(:html_simple).html_safe
