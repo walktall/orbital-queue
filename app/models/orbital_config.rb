@@ -38,7 +38,7 @@ class OrbitalConfig < ApplicationRecord
   attribute :remind_before_in_sec, :integer, default: 180
 
   validates :location_id, :city_id, :city_name, :location_name, :vehicle_type_names, :pickup_area_geo, :bay_area_geo, presence: true
-  validates :welcome_message, :welcome_back_message, :out_of_queue_remind_message, :out_of_queue_message, :alert_message, :update_message, presence: true
+  validates :welcome_message, :welcome_back_message, :alert_message, :update_message, presence: true
   validates :range_template, :range_template_with_eta, presence: true
   validate :geohashes_should_not_contain_invalid_chars, :vehicle_type_and_names_format, :queue_position_dynamic_multiple_format
 
