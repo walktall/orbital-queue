@@ -58,7 +58,7 @@ gem 'bootstrap'
 gem 'simple_form'
 
 gem 'diffy'
-
+gem 'clipboard-rails'
 
 # For heroku
 ruby "2.5.1"
