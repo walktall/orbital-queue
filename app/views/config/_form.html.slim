@@ -2,12 +2,12 @@
   = f.input :city_id, label: 'City ID', hint: 'City ID on Gamma', required: true
   = f.input :city_name, hint: 'Time zone string on gamma', placeholder: 'e.g. Asia/Kuala_Lumpur', required: true
   = f.input :location_id, label: 'Location ID', as: :integer, required: true,
-          placeholder: "Can be any unique positive integer, as long as it's unique among all the locations"
-  = f.input :location_name, required: true, placeholder: 'e.g. KILA', hint: 'Your custom location name'
+          placeholder: "Can be any unique positive integer, as long as it's unique among all the locations", hint: 'check existing location ids in google spreadsheet'
+  = f.input :location_name, required: true, placeholder: 'e.g. KLIA', hint: 'Your custom location name'
   = f.input :vehicle_type_names, label: 'Vehicle type and names', required: true,
           input_html: { value: display_value_for(:vehicle_type_names) },
           placeholder: 'e.g. "302": "JustGrab - Airport", "400": "Taxi - Airport"',
-          hint: 'Comma separated pairs with the key of taxi type ID and value of the name. The name will be used in the notifications.'
+          hint: 'Comma separated pairs with taxi type ID and taxi type name. The name will be used in the notifications.'
   = f.input :pickup_area_geo, required: true,
           input_html: { value: display_value_for(:pickup_area_geo) },
           hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
@@ -35,20 +35,20 @@
 
   = f.input :ignore_quota,
           placeholder: 'Leave blank to use the default value: 2',
-          hint: 'Number of ignored booking to reset driver\'s position in queue'
+          hint: 'Number of ignores by driver to move driver to back to the end of queue'
   = f.input :mercy_period_in_sec,
           placeholder: 'Leave blank to use the default value: 300',
-          hint: 'Number of seconds after the driver turn off app and to be moved to the last of queue / Number of minutes after dax moving out of X area and move to the last of queue'
+          hint: 'Number of seconds after the driver turn off app to be moved to the end of queue / Number of seconds after dax moving out of bay area to be moved to the end of queue'
   = f.input :pax_cancel_record_ttl_in_sec,
           placeholder: 'Leave blank to use the default value: 900',
-          hint: 'Number of minutes for dax to come back to X after pax cancels'
+          hint: 'Number of seconds for dax to come back to bay area after pax cancels'
   = f.input :remind_snooze_time_in_sec,
           placeholder: 'Leave blank to use the default value: 60',
-          hint: 'We will only send one notification in the snooze period, e.g. If the driver get a reminder at 12:00 and the next reminder will be at 12:05 if this number is set to 5 mins.'
+          hint: 'If value is 120, when driver is out of queue, driver will get the "Out Of Queue Message" every 2 mins when driver is out of queue and has not exceed the mercy period.'
 
   = f.input :remind_before_in_sec,
           placeholder: 'Leave blank to use the default value: 180',
-          hint: 'When will the remind msg be sent if drivers are in danger of getting kicked out'
+          hint: 'If value is 120, when driver is out of queue, driver will get the "Out Of Queue Remind Message" 2 mins before mercy period ends.'
 
   = f.hidden_field :uid
 
@@ -56,13 +56,13 @@
   br
   br
 
-  = f.input :welcome_message, required: true, placeholder: 'e.g. [GRAB] Welcome to KILA.'
-  = f.input :welcome_back_message, required: true, label: 'Welcome With Pax Cancel Message',
+  = f.input :welcome_message, required: true, placeholder: 'e.g. [GRAB] Welcome to KLIA.', hint: 'This message will be combined with "Range template with eta"'
+  = f.input :welcome_back_message, required: true, label: 'Welcome With Pax Cancel Message', hint: 'This message will be combined with "Range template with eta"',
           placeholder: 'e.g. [GRAB] Because passenger has cancelled, you are back in queue. Your current position is:'
-  = f.input :update_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KILA is: '
-  = f.input :alert_message, required: true, placeholder: 'e.g. [GRAB] Your KILA Queue number has changed to: '
+  = f.input :update_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KLIA is: ', hint: 'This message will be combined with "Range template with eta"'
+  = f.input :alert_message, required: true, placeholder: 'e.g. [GRAB] Your KLIA Queue number has changed to: ', hint: 'This message will be combined with "Range template with eta"'
   = f.input :out_of_queue_message, required: true, placeholder: 'e.g. [GRAB] You are out of the Queue. You can rejoin by coming back to the queue area.'
-  = f.input :out_of_queue_remind_message, required: true, placeholder: 'e.g. [GRAB] You are outside the queue. Please return to the queue within 5 minutes to maintain the original queue'
+  = f.input :out_of_queue_remind_message, required: true, placeholder: 'e.g. [GRAB] You are outside the queue. Please return to the queue within X minutes to maintain the original queue position', hint: 'x should be the same value as "remind before in sec"'
   = f.input :range_template, required: true, placeholder: 'e.g. [%d - %d]',
           hint: 'A string for the range template, %d will be replaced with queue positions'
   = f.input :range_template_with_eta, required: true,
