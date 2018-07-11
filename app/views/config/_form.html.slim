@@ -29,26 +29,25 @@
           input_html: { value: display_value_for(:queue_position_dynamic_multiple) },
           placeholder: "e.g. \"200\": 50, \"500\": 100\n(Leave blank to disable the feature, recommend to set this for very large queues).",
           hint: "(Optional) Comma separated pairs with the value of queue position and the key of the length of the range.\
-          This defines the frequency of the notifications based on current position of drivers. e.g. \"500\": 100 means when the\
-          queue position of driver is greater than 500, we will send a update message to the driver when his position number has change\
+          This defines the frequency of the notifications based on current queue position of drivers. e.g. \"500\": 100 means when the\
+          queue position of driver is greater than 500, we will send a update message to the driver when his queue position number has change\
           by 100."
 
   = f.input :ignore_quota,
           placeholder: 'Leave blank to use the default value: 2',
-          hint: 'Number of ignores by driver to move driver to back to the end of queue'
+          hint: 'Number of ignores by driver to move driver back to the end of queue position'
   = f.input :mercy_period_in_sec,
           placeholder: 'Leave blank to use the default value: 300',
-          hint: 'Number of seconds after the driver turn off app to be moved to the end of queue / Number of seconds after dax moving out of bay area to be moved to the end of queue'
+          hint: 'Number of seconds after the driver turn off app or moved out of the bay area to be moved to the end of queue position'
   = f.input :pax_cancel_record_ttl_in_sec,
           placeholder: 'Leave blank to use the default value: 900',
           hint: 'Number of seconds for dax to come back to bay area after pax cancels'
   = f.input :remind_snooze_time_in_sec,
           placeholder: 'Leave blank to use the default value: 60',
-          hint: 'If value is 120, when driver is out of queue, driver will get the "Out Of Queue Message" every 2 mins when driver is out of queue and has not exceed the mercy period.'
-
+          hint: 'If value is 180, when driver turn off app or moved out of bay area, driver will get the "Out Of Queue Remind Message" every 3 mins after receiving the first "Out of Queue Remind Message"'
   = f.input :remind_before_in_sec,
           placeholder: 'Leave blank to use the default value: 180',
-          hint: 'If value is 120, when driver is out of queue, driver will get the "Out Of Queue Remind Message" 2 mins before mercy period ends.'
+          hint: 'The time we send the 1st "Out of Queue Remind Message". If value is 300, we will send this 5 mins before "mercy period in sec" ends.'
 
   = f.hidden_field :uid
 
@@ -56,19 +55,27 @@
   br
   br
 
-  = f.input :welcome_message, required: true, placeholder: 'e.g. [GRAB] Welcome to KLIA.', hint: 'This message will be combined with "Range template with eta"'
-  = f.input :welcome_back_message, required: true, label: 'Welcome With Pax Cancel Message', hint: 'This message will be combined with "Range template with eta"',
-          placeholder: 'e.g. [GRAB] Because passenger has cancelled, you are back in queue. Your current position is:'
-  = f.input :update_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KLIA is: ', hint: 'This message will be combined with "Range template with eta"'
-  = f.input :alert_message, required: true, placeholder: 'e.g. [GRAB] Your KLIA Queue number has changed to: ', hint: 'This message will be combined with "Range template with eta"'
-  = f.input :out_of_queue_message, required: true, placeholder: 'e.g. [GRAB] You are out of the Queue. You can rejoin by coming back to the queue area.'
-  = f.input :out_of_queue_remind_message, required: true, placeholder: 'e.g. [GRAB] You are outside the queue. Please return to the queue within X minutes to maintain the original queue position', hint: 'x should be the same value as "remind before in sec"'
-  = f.input :range_template, required: true, placeholder: 'e.g. [%d - %d]',
-          hint: 'A string for the range template, %d will be replaced with queue positions'
+  = f.input :welcome_message, required: true, placeholder: 'e.g. [GRAB] Welcome to KLIA. Your queue number for:', hint: 'This message will be combined with "Range template with eta"'
+  = f.input :welcome_back_message, required: true, label: 'Welcome With Pax Cancel Message',
+          hint: 'This message will be combined with "Range template with eta". Dax will receive this upon reaching the bay area after pax cancels.',
+          placeholder: 'e.g. [GRAB] Because passenger has cancelled, you are back in queue. Your queue number for:'
+  = f.input :update_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KLIA is:',
+          hint: 'This message will be combined with "Range template". Dax will receive this when their queue position moved by X.'
+  = f.input :alert_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KLIA has changed to: ',
+          hint: 'This message will be combined with "Range template". Dax will receive this when being sent back to the end of queue position'
+  = f.input :out_of_queue_message, required: true,
+          placeholder: 'e.g. [GRAB] You are out of the KLIA Queue. You can rejoin by coming back to the queue area or turn on your app.',
+          hint: 'Dax will receive this when dax is no longer in the queue'
+  = f.input :out_of_queue_remind_message, required: true,
+          placeholder: 'e.g. [GRAB] You are currently not in the queue. Please return to the queue area or turn on your app to maintain your queue position',
+          hint: 'Dax will receive this according to the "remind_before_in_sec" and "remind_snooze_time_in_sec" values"'
+  = f.input :range_template, required: true, placeholder: 'e.g. %d-%d',
+          hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position. Message would look like this "GrabCar: 1-5".'
   = f.input :range_template_with_eta, required: true,
-          placeholder: 'e.g. [%d - %d]  (ETA: %d min) ',
-          hint: 'Similar to range_template with a extra field of ETA in minutes'
+          placeholder: 'e.g. %d-%d (ETA: %d min)',
+          hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position and ETA. Message would look like this "GrabCar: 1-5 (ETA: 20 min)."'
 
   = f.input :readmore_link, placeholder: 'e.g. bit.ly/svbqueue'
 
-  = f.button :submit, "Generate", class: "btn-success"
+  = f.button :submit, 'Generate', class: 'btn-success'
+
