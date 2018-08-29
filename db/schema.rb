@@ -12,13 +12,10 @@
 
 ActiveRecord::Schema.define(version: 20180605055739) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "orbital_configs", force: :cascade do |t|
     t.string "uid"
     t.integer "version"
-    t.json "data"
+    t.text "data"
     t.index ["uid", "version"], name: "index_orbital_configs_on_uid_and_version", unique: true
   end
 
