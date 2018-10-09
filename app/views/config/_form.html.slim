@@ -74,6 +74,9 @@
           hint: 'Dax will receive this according to the "remind_before_in_sec" and "remind_snooze_time_in_sec" values"'
   = f.input :range_template, required: true, placeholder: 'e.g. %d-%d',
           hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position. Message would look like this "GrabCar: 1-5".'
+  = f.input :rank_template,
+          placeholder: 'Leave blank to use the default value: %s:%s ',
+          hint: 'With default value, Message would look like this "GrabCar:1-5". First %s was replaced with GrabCan and second is 1-5'
   = f.input :range_template_with_eta, required: true,
           placeholder: 'e.g. %d-%d (ETA: %d min)',
           hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position and ETA. Message would look like this "GrabCar: 1-5 (ETA: 20 min)."'

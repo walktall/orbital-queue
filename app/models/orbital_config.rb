@@ -18,6 +18,7 @@ class OrbitalConfig < ApplicationRecord
   attribute :readmore_link
 
   attribute :range_template, :string
+  attribute :rank_template, :string
   attribute :range_template_with_eta, :string
 
   # Integer, Send a message to driver after he has moved X positions in the queue.
@@ -67,6 +68,7 @@ class OrbitalConfig < ApplicationRecord
                 out_of_queue_msg: :out_of_queue_message,
             },
         rangeTemplate: :range_template,
+        rankTemplate: :rank_template,
         rangeTemplateWithEta: :range_template_with_eta,
         readMore: :readmore_link,
     },
@@ -90,6 +92,9 @@ class OrbitalConfig < ApplicationRecord
   after_initialize :default_values
   def default_values
     self.cancel_quota ||= 0
+    if self.rank_template == ''
+      self.rank_template = '%s:%s '
+    end
   end
 
   # Serialize config object to JSON string
