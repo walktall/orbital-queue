@@ -36,6 +36,9 @@
   = f.input :ignore_quota,
           placeholder: 'Leave blank to use the default value: 2',
           hint: 'Number of ignores by driver to move driver back to the end of queue position'
+  = f.input :cancel_quota,
+          placeholder: 'Leave blank to use the default value: 0',
+          hint: 'Number of cancels by driver to move driver back to the end of queue position'
   = f.input :mercy_period_in_sec,
           placeholder: 'Leave blank to use the default value: 300',
           hint: 'Number of seconds after the driver turn off app or moved out of the bay area to be moved to the end of queue position'

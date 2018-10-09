@@ -26,6 +26,9 @@ class OrbitalConfig < ApplicationRecord
   attribute :queue_position_dynamic_multiple, Types::ValuePair.new
   # Number of ignored booking to reset Driver's position in queue
   attribute :ignore_quota, :integer, default: 2
+  # Number of canceled booking to reset Driver's position in queue
+  attribute :cancel_quota, :integer
+
   # Number of seconds after the driver turn off app and to be moved to the last of queue / Number of minutes after dax moving out
   # of X area and move to the last of queue
   attribute :mercy_period_in_sec, :integer, default: 300
@@ -72,6 +75,7 @@ class OrbitalConfig < ApplicationRecord
         queuePositionMultiple: :queue_position_multiple,
         queuePositionDynamicMultiple: :queue_position_dynamic_multiple,
         ignoreQuota: :ignore_quota,
+        cancelQuota: :cancel_quota,
         mercyPeriodInSec: :mercy_period_in_sec,
         paxCancelRecordTTLInSec: :pax_cancel_record_ttl_in_sec,
         remindSnoozeTimeInSec: :remind_snooze_time_in_sec,
@@ -81,6 +85,11 @@ class OrbitalConfig < ApplicationRecord
 
   def pretty_print_data
     JSON.pretty_generate(JSON.parse(data))
+  end
+
+  after_initialize :default_values
+  def default_values
+    self.cancel_quota ||= 0
   end
 
   # Serialize config object to JSON string
