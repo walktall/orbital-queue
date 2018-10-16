@@ -21,6 +21,54 @@ class OrbitalConfig < ApplicationRecord
   attribute :rank_template, :string
   attribute :range_template_with_eta, :string
 
+  attribute :inbox_and_push_welcome_message_title, :string
+  attribute :inbox_and_push_welcome_message_subtitle, :string
+  attribute :inbox_and_push_welcome_message_category, :string
+  attribute :inbox_and_push_welcome_message_content, :string
+  attribute :inbox_and_push_welcome_message_button_text, :string
+  attribute :inbox_and_push_welcome_message_button_link, :string
+
+  attribute :inbox_and_push_welcome_back_message_title, :string
+  attribute :inbox_and_push_welcome_back_message_subtitle, :string
+  attribute :inbox_and_push_welcome_back_message_category, :string
+  attribute :inbox_and_push_welcome_back_message_content, :string
+  attribute :inbox_and_push_welcome_back_message_button_text, :string
+  attribute :inbox_and_push_welcome_back_message_button_link, :string
+
+  attribute :inbox_and_push_out_of_queue_remind_message_title, :string
+  attribute :inbox_and_push_out_of_queue_remind_message_subtitle, :string
+  attribute :inbox_and_push_out_of_queue_remind_message_category, :string
+  attribute :inbox_and_push_out_of_queue_remind_message_content, :string
+  attribute :inbox_and_push_out_of_queue_remind_message_button_text, :string
+  attribute :inbox_and_push_out_of_queue_remind_message_button_link, :string
+
+  attribute :inbox_and_push_out_of_queue_message_title, :string
+  attribute :inbox_and_push_out_of_queue_message_subtitle, :string
+  attribute :inbox_and_push_out_of_queue_message_category, :string
+  attribute :inbox_and_push_out_of_queue_message_content, :string
+  attribute :inbox_and_push_out_of_queue_message_button_text, :string
+  attribute :inbox_and_push_out_of_queue_message_button_link, :string
+
+  attribute :inbox_and_push_alert_message_title, :string
+  attribute :inbox_and_push_alert_message_subtitle, :string
+  attribute :inbox_and_push_alert_message_category, :string
+  attribute :inbox_and_push_alert_message_content, :string
+  attribute :inbox_and_push_alert_message_button_text, :string
+  attribute :inbox_and_push_alert_message_button_link, :string
+
+  attribute :inbox_and_push_update_message_title, :string
+  attribute :inbox_and_push_update_message_subtitle, :string
+  attribute :inbox_and_push_update_message_category, :string
+  attribute :inbox_and_push_update_message_content, :string
+  attribute :inbox_and_push_update_message_button_text, :string
+  attribute :inbox_and_push_update_message_button_link, :string
+
+  attribute :inbox_and_push_ttl_in_minute, :integer, default: 1
+  attribute :inbox_and_push_readmore_link
+  attribute :inbox_and_push_range_template, :string
+  attribute :inbox_and_push_rank_template, :string
+  attribute :inbox_and_push_range_template_with_eta, :string
+
   # Integer, Send a message to driver after he has moved X positions in the queue.
   attribute :queue_position_multiple, :integer, :default => 5
   # Hash, The frequency of the notification based on current position of drivers
@@ -72,7 +120,66 @@ class OrbitalConfig < ApplicationRecord
         rangeTemplateWithEta: :range_template_with_eta,
         readMore: :readmore_link,
     },
-
+    messageV2: {
+      messageTitle:
+      {
+          alert_msg: :inbox_and_push_alert_message_title,
+          update_msg: :inbox_and_push_update_message_title,
+          welcome_msg: :inbox_and_push_welcome_message_title,
+          welcomeback_msg: :inbox_and_push_welcome_back_message_title,
+          remind_msg: :inbox_and_push_out_of_queue_remind_message_title,
+          out_of_queue_msg: :inbox_and_push_out_of_queue_message_title,
+      },
+      messageSubtitle:
+      {
+          alert_msg: :inbox_and_push_alert_message_subtitle,
+          update_msg: :inbox_and_push_update_message_subtitle,
+          welcome_msg: :inbox_and_push_welcome_message_subtitle,
+          welcomeback_msg: :inbox_and_push_welcome_back_message_subtitle,
+          remind_msg: :inbox_and_push_out_of_queue_remind_message_subtitle,
+          out_of_queue_msg: :inbox_and_push_out_of_queue_message_subtitle,
+      },
+      messageCategory:
+      {
+          alert_msg: :inbox_and_push_alert_message_category,
+          update_msg: :inbox_and_push_update_message_category,
+          welcome_msg: :inbox_and_push_welcome_message_category,
+          welcomeback_msg: :inbox_and_push_welcome_back_message_category,
+          remind_msg: :inbox_and_push_out_of_queue_remind_message_category,
+          out_of_queue_msg: :inbox_and_push_out_of_queue_message_category,
+      },
+      messageContent:
+      {
+          alert_msg: :inbox_and_push_alert_message_content,
+          update_msg: :inbox_and_push_update_message_content,
+          welcome_msg: :inbox_and_push_welcome_message_content,
+          welcomeback_msg: :inbox_and_push_welcome_back_message_content,
+          remind_msg: :inbox_and_push_out_of_queue_remind_message_content,
+          out_of_queue_msg: :inbox_and_push_out_of_queue_message_content,
+      },
+      buttonText:
+      {
+          alert_msg: :inbox_and_push_alert_message_button_text,
+          update_msg: :inbox_and_push_update_message_button_text,
+          welcome_msg: :inbox_and_push_welcome_message_button_text,
+          welcomeback_msg: :inbox_and_push_welcome_back_message_button_text,
+          remind_msg: :inbox_and_push_out_of_queue_remind_message_button_text,
+          out_of_queue_msg: :inbox_and_push_out_of_queue_message_button_text,
+      },
+      buttonLink:
+      {
+          alert_msg: :inbox_and_push_alert_message_button_link,
+          update_msg: :inbox_and_push_update_message_button_link,
+          welcome_msg: :inbox_and_push_welcome_message_button_link,
+          welcomeback_msg: :inbox_and_push_welcome_back_message_button_link,
+          remind_msg: :inbox_and_push_out_of_queue_remind_message_button_link,
+          out_of_queue_msg: :inbox_and_push_out_of_queue_message_button_link,
+       },
+        ttlInMinute: :inbox_and_push_ttl_in_minute,
+        rangeTemplate: :inbox_and_push_range_template,
+        rangeTemplateWithEta: :inbox_and_push_range_template_with_eta,
+        readMore: :inbox_and_push_readmore_link,
+    },
     queueSpec: {
         queuePositionMultiple: :queue_position_multiple,
         queuePositionDynamicMultiple: :queue_position_dynamic_multiple,
@@ -92,6 +199,7 @@ class OrbitalConfig < ApplicationRecord
   after_initialize :default_values
   def default_values
     self.cancel_quota ||= 0
+    self.inbox_and_push_ttl_in_minute ||= 1
     if self.rank_template == ''
       self.rank_template = '%s:%s '
     end
