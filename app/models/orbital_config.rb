@@ -6,6 +6,7 @@ class OrbitalConfig < ApplicationRecord
   attribute :location_name, :string
   # Used to get message configs from ucm
   attribute :message_config_id, :string
+  attribute :location_url, :string
   attribute :vehicle_type_names, Types::ValuePair.new
   attribute :pickup_area_geo, Types::GeohashArray.new
   attribute :bay_area_geo, Types::GeohashArray.new
@@ -39,6 +40,7 @@ class OrbitalConfig < ApplicationRecord
     locID: :location_id,
     cityID: :city_id,
     locationName: :location_name,
+    locationURL: :location_url,
     vehicleTypes: :vehicle_types,
     vehicleTypeNames: :vehicle_type_names,
     pickUpGeo: :pickup_area_geo,
