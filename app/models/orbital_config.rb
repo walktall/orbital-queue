@@ -3,23 +3,12 @@ class OrbitalConfig < ApplicationRecord
 
   attribute :location_id, :integer
   attribute :city_id, :integer
-  attribute :city_name, :string
   attribute :location_name, :string
+  # Used to get message configs from ucm
+  attribute :message_config_id, :string
   attribute :vehicle_type_names, Types::ValuePair.new
   attribute :pickup_area_geo, Types::GeohashArray.new
   attribute :bay_area_geo, Types::GeohashArray.new
-
-  attribute :welcome_message, :string
-  attribute :welcome_back_message, :string
-  attribute :out_of_queue_remind_message, :string
-  attribute :out_of_queue_message, :string
-  attribute :alert_message, :string
-  attribute :update_message, :string
-  attribute :readmore_link
-
-  attribute :range_template, :string
-  attribute :rank_template, :string
-  attribute :range_template_with_eta, :string
 
   # Integer, Send a message to driver after he has moved X positions in the queue.
   attribute :queue_position_multiple, :integer, :default => 5
@@ -41,9 +30,7 @@ class OrbitalConfig < ApplicationRecord
   # When will the remind msg be sent if drivers are in danger of getting kicked out
   attribute :remind_before_in_sec, :integer, default: 180
 
-  validates :location_id, :city_id, :city_name, :location_name, :vehicle_type_names, :pickup_area_geo, :bay_area_geo, presence: true
-  validates :welcome_message, :welcome_back_message, :alert_message, :update_message, presence: true
-  validates :range_template, :range_template_with_eta, presence: true
+  validates :location_id, :city_id, :location_name, :vehicle_type_names, :message_config_id, :pickup_area_geo, :bay_area_geo, presence: true
   validate :geohashes_should_not_contain_invalid_chars, :vehicle_type_and_names_format, :queue_position_dynamic_multiple_format
 
   # The key mapping of the json config keys to attributes
@@ -51,28 +38,12 @@ class OrbitalConfig < ApplicationRecord
   JSON_KEY_MAP = {
     locID: :location_id,
     cityID: :city_id,
-    cityName: :city_name,
     locationName: :location_name,
     vehicleTypes: :vehicle_types,
     vehicleTypeNames: :vehicle_type_names,
     pickUpGeo: :pickup_area_geo,
     bayAreaGeo: :bay_area_geo,
-    message: {
-        messageContent:
-            {
-                alert_msg: :alert_message,
-                update_msg: :update_message,
-                welcome_msg: :welcome_message,
-                welcomeback_msg: :welcome_back_message,
-                remind_msg: :out_of_queue_remind_message,
-                out_of_queue_msg: :out_of_queue_message,
-            },
-        rangeTemplate: :range_template,
-        rankTemplate: :rank_template,
-        rangeTemplateWithEta: :range_template_with_eta,
-        readMore: :readmore_link,
-    },
-
+    messageConfigID: :message_config_id,
     queueSpec: {
         queuePositionMultiple: :queue_position_multiple,
         queuePositionDynamicMultiple: :queue_position_dynamic_multiple,
@@ -92,9 +63,6 @@ class OrbitalConfig < ApplicationRecord
   after_initialize :default_values
   def default_values
     self.cancel_quota ||= 0
-    if self.rank_template == ''
-      self.rank_template = '%s:%s '
-    end
   end
 
   # Serialize config object to JSON string

@@ -1,9 +1,9 @@
 = simple_form_for @config, url: config_index_path, method: :post do |f|
   = f.input :city_id, label: 'City ID', hint: 'City ID on Gamma', required: true
-  = f.input :city_name, hint: 'Time zone string on gamma', placeholder: 'e.g. Asia/Kuala_Lumpur', required: true
   = f.input :location_id, label: 'Location ID', as: :integer, required: true,
-          placeholder: "Can be any unique positive integer, as long as it's unique among all the locations", hint: 'check existing location ids in google spreadsheet'
-  = f.input :location_name, required: true, placeholder: 'e.g. KLIA', hint: 'Your custom location name'
+          placeholder: "Can be any unique positive integer, as long as it's unique among all the locations", hint: 'check existing location ids in https://wiki.grab.com/display/GEO/Orbital+Queue+Config'
+  = f.input :location_name, required: true, placeholder: 'e.g. KLIA', hint: 'Your custom location name, this will be used in message sent to dax, so be sure to use native language here'
+  = f.input :message_config_id, required: true, placeholder: 'e.g. malay', hint: 'Check https://wiki.grab.com/display/GEO/Orbital+Queue+Config for message config id.'
   = f.input :vehicle_type_names, label: 'Vehicle type and names', required: true,
           input_html: { value: display_value_for(:vehicle_type_names) },
           placeholder: 'e.g. "302": "JustGrab - Airport", "400": "Taxi - Airport"',
@@ -53,35 +53,6 @@
           hint: 'The time we send the 1st "Out of Queue Remind Message". If value is 300, we will send this 5 mins before "mercy period in sec" ends.'
 
   = f.hidden_field :uid
-
-  .badge.badge-light Notification Content
-  br
-  br
-
-  = f.input :welcome_message, required: true, placeholder: 'e.g. [GRAB] Welcome to KLIA. Your queue number for:', hint: 'This message will be combined with "Range template with eta"'
-  = f.input :welcome_back_message, required: true, label: 'Welcome With Pax Cancel Message',
-          hint: 'This message will be combined with "Range template with eta". Dax will receive this upon reaching the bay area after pax cancels.',
-          placeholder: 'e.g. [GRAB] Because passenger has cancelled, you are back in queue. Your queue number for:'
-  = f.input :update_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KLIA is:',
-          hint: 'This message will be combined with "Range template". Dax will receive this when their queue position moved by X.'
-  = f.input :alert_message, required: true, placeholder: 'e.g. [GRAB] Your queue number at KLIA has changed to: ',
-          hint: 'This message will be combined with "Range template". Dax will receive this when being sent back to the end of queue position'
-  = f.input :out_of_queue_message, required: true,
-          placeholder: 'e.g. [GRAB] You are out of the KLIA Queue. You can rejoin by coming back to the queue area or turn on your app.',
-          hint: 'Dax will receive this when dax is no longer in the queue'
-  = f.input :out_of_queue_remind_message, required: true,
-          placeholder: 'e.g. [GRAB] You are currently not in the queue. Please return to the queue area or turn on your app to maintain your queue position',
-          hint: 'Dax will receive this according to the "remind_before_in_sec" and "remind_snooze_time_in_sec" values"'
-  = f.input :range_template, required: true, placeholder: 'e.g. %d-%d',
-          hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position. Message would look like this "GrabCar: 1-5".'
-  = f.input :rank_template,
-          placeholder: 'Leave blank to use the default value: %s:%s ',
-          hint: 'With default value, Message would look like this "GrabCar:1-5". First %s was replaced with GrabCan and second is 1-5'
-  = f.input :range_template_with_eta, required: true,
-          placeholder: 'e.g. %d-%d (ETA: %d min)',
-          hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position and ETA. Message would look like this "GrabCar: 1-5 (ETA: 20 min)."'
-
-  = f.input :readmore_link, placeholder: 'e.g. bit.ly/svbqueue'
 
   = f.button :submit, 'Generate', class: 'btn-success'
 
