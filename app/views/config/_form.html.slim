@@ -54,7 +54,7 @@
 
   = f.hidden_field :uid
 
-  .badge.badge-light SMS Notification Content
+  .badge.badge-light Notification Content
   br
   br
 
@@ -82,66 +82,6 @@
           hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position and ETA. Message would look like this "GrabCar: 1-5 (ETA: 20 min)."'
 
   = f.input :readmore_link, placeholder: 'e.g. bit.ly/svbqueue'
-
-  .badge.badge-light InboxAndPush Notification Content
-  br
-  br
-
-  = f.input :inbox_and_push_welcome_message_title, required: true, placeholder: 'e.g. [GRAB] Welcome to KLIA.'
-  = f.input :inbox_and_push_welcome_message_subtitle
-  = f.input :inbox_and_push_welcome_message_category
-  = f.input :inbox_and_push_welcome_message_content, required: true, placeholder: 'e.g. Your queue number for:', hint: 'This message will be combined with "Range template with eta"'
-  = f.input :inbox_and_push_welcome_message_button_text
-  = f.input :inbox_and_push_welcome_message_button_link
-
-  = f.input :inbox_and_push_welcome_back_message_title, required: true, label: 'Inbox and push welcome with pax cancel message Title', placeholder: 'e.g. [GRAB] Because passenger has cancelled, you are back in queue.'
-  = f.input :inbox_and_push_welcome_back_message_subtitle, label: 'Inbox and push welcome with pax cancel message subtitle'
-  = f.input :inbox_and_push_welcome_back_message_category, label: 'Inbox and push welcome with pax cancel message category'
-  = f.input :inbox_and_push_welcome_back_message_content, required: true, label: 'Inbox and push welcome with pax cancel message content', placeholder: 'e.g. Your queue number for:', hint: 'This message will be combined with "Range template with eta". Dax will receive this upon reaching the bay area after pax cancels.'
-  = f.input :inbox_and_push_welcome_back_message_button_text, label: 'Inbox and push welcome with pax cancel message button text'
-  = f.input :inbox_and_push_welcome_back_message_button_link, label: 'Inbox and push welcome with pax cancel message button link'
-
-  = f.input :inbox_and_push_update_message_title, required: true, placeholder: 'e.g. [GRAB] Queue Update.'
-  = f.input :inbox_and_push_update_message_subtitle
-  = f.input :inbox_and_push_update_message_category
-  = f.input :inbox_and_push_update_message_content, required: true, placeholder: 'e.g. Your queue number for:', hint: 'This message will be combined with "Range template". Dax will receive this when their queue position moved by X.'
-  = f.input :inbox_and_push_update_message_button_text
-  = f.input :inbox_and_push_update_message_button_link
-
-  = f.input :inbox_and_push_alert_message_title, required: true, placeholder: 'e.g. [GRAB] Queue Number changed.'
-  = f.input :inbox_and_push_alert_message_subtitle
-  = f.input :inbox_and_push_alert_message_category
-  = f.input :inbox_and_push_alert_message_content, required: true, placeholder: 'e.g. [GRAB] Your queue number at KLIA has changed to: ', hint: 'This message will be combined with "Range template". Dax will receive this when being sent back to the end of queue position'
-  = f.input :inbox_and_push_alert_message_button_text
-  = f.input :inbox_and_push_alert_message_button_link
-
-  = f.input :inbox_and_push_out_of_queue_message_title, required: true, placeholder: 'e.g. [GRAB] You are currently not in the queue.'
-  = f.input :inbox_and_push_out_of_queue_message_subtitle
-  = f.input :inbox_and_push_out_of_queue_message_category
-  = f.input :inbox_and_push_out_of_queue_message_content, required: true, placeholder: 'e.g. You can rejoin by coming back to the queue area or turn on your app.',
-          hint: 'Dax will receive this when dax is no longer in the queue'
-  = f.input :inbox_and_push_out_of_queue_message_button_text
-  = f.input :inbox_and_push_out_of_queue_message_button_link
-
-  = f.input :inbox_and_push_out_of_queue_remind_message_title, required: true, placeholder: 'e.g. [GRAB] You are currently not in the queue.'
-  = f.input :inbox_and_push_out_of_queue_remind_message_subtitle
-  = f.input :inbox_and_push_out_of_queue_remind_message_category
-  = f.input :inbox_and_push_out_of_queue_remind_message_content, required: true, placeholder: 'e.g. Please return to the queue area or turn on your app to maintain your queue position',
-          hint: 'Dax will receive this according to the "remind_before_in_sec" and "remind_snooze_time_in_sec" values"'
-  = f.input :inbox_and_push_out_of_queue_remind_message_button_text
-  = f.input :inbox_and_push_out_of_queue_remind_message_button_link
-
-  = f.input :inbox_and_push_ttl_in_minute, required: true, placeholder: 'e.g. 1',
-          hint: 'How many minutes this message will be stayed in inbox. Default will be 1 mintue'
-
-  = f.input :inbox_and_push_range_template, required: true, placeholder: 'e.g. %d-%d',
-          hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position. Message would look like this "GrabCar: 1-5".'
-
-  = f.input :inbox_and_push_range_template_with_eta, required: true,
-          placeholder: 'e.g. %d-%d (ETA: %d min)',
-          hint: 'Vehicle name will be automatically included in this. Use %d as a variable for queue position and ETA. Message would look like this "GrabCar: 1-5 (ETA: 20 min)."'
-
-  = f.input :inbox_and_push_readmore_link, placeholder: 'e.g. bit.ly/svbqueue'
 
   = f.button :submit, 'Generate', class: 'btn-success'
 
