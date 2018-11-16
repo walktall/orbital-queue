@@ -3,6 +3,7 @@
   = f.input :location_id, label: 'Location ID', as: :integer, required: true,
           placeholder: "Can be any unique positive integer, as long as it's unique among all the locations", hint: 'check existing location ids in https://wiki.grab.com/display/GEO/Orbital+Queue+Config'
   = f.input :location_name, required: true, placeholder: 'e.g. KLIA', hint: 'Your custom location name, this will be used in message sent to dax, so be sure to use native language here'
+  = f.input :location_url, placeholder: 'e.g. http://bit.ly/dmkqueue', hint: 'You can put a URL here and reference it in your message content'
   = f.input :message_config_id, required: true, placeholder: 'e.g. malay', hint: 'Check https://wiki.grab.com/display/GEO/Orbital+Queue+Config for message config id.'
   = f.input :vehicle_type_names, label: 'Vehicle type and names', required: true,
           input_html: { value: display_value_for(:vehicle_type_names) },
