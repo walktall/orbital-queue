@@ -36,10 +36,10 @@
 
   = f.input :ignore_quota,
           placeholder: 'Leave blank to use the default value: 2',
-          hint: 'Number of ignores by driver to move driver back to the end of queue position'
+          hint: 'Number of ignores by driver to move driver back to the end of queue position, if you make it 1, it means dax is not able to ignore at all. So for example, if you want dax be able to ignore 2 times, you need to set ignore quota 3.'
   = f.input :cancel_quota,
           placeholder: 'Leave blank to use the default value: 0',
-          hint: 'Number of cancels by driver to move driver back to the end of queue position'
+          hint: 'Number of cancels by driver to move driver back to the end of queue position, if you make it 1, it means dax is not able to cancel at all. So for example, if you want dax be able to cancel 2 times, you need to set cancel quota 3.'
   = f.input :mercy_period_in_sec,
           placeholder: 'Leave blank to use the default value: 300',
           hint: 'Number of seconds after the driver turn off app or moved out of the bay area to be moved to the end of queue position'
