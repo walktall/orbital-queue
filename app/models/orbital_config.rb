@@ -10,6 +10,7 @@ class OrbitalConfig < ApplicationRecord
   attribute :vehicle_type_names, Types::ValuePair.new
   attribute :pickup_area_geo, Types::GeohashArray.new
   attribute :bay_area_geo, Types::GeohashArray.new
+  attribute :whitelist_enabled, :boolean
 
   # Integer, Send a message to driver after he has moved X positions in the queue.
   attribute :queue_position_multiple, :integer, :default => 5
@@ -23,6 +24,7 @@ class OrbitalConfig < ApplicationRecord
   # Number of seconds after the driver turn off app and to be moved to the last of queue / Number of minutes after dax moving out
   # of X area and move to the last of queue
   attribute :mercy_period_in_sec, :integer, default: 300
+  attribute :pax_cancel_no_priority_enabled, :boolean
   # Number of minutes for dax to come back to X after pax cancels
   attribute :pax_cancel_record_ttl_in_sec, :integer, default: 900
   # We will only send one notification in the snooze period
@@ -30,6 +32,11 @@ class OrbitalConfig < ApplicationRecord
   attribute :remind_snooze_time_in_sec, :integer, default: 180
   # When will the remind msg be sent if drivers are in danger of getting kicked out
   attribute :remind_before_in_sec, :integer, default: 180
+  attribute :sms_fallback_triggered_error_count, :integer, default: 3
+  attribute :sms_fallback_error_count_reset_in_sec, :integer, default: 3600
+  attribute :sms_fallback_duration_in_sec, :integer, default: 86400
+  attribute :short_distance_job_distance, :float
+  attribute :short_distance_job_record_ttl_in_sec, :integer
 
   validates :location_id, :city_id, :location_name, :vehicle_type_names, :message_config_id, :pickup_area_geo, :bay_area_geo, presence: true
   validate :geohashes_should_not_contain_invalid_chars, :vehicle_type_and_names_format, :queue_position_dynamic_multiple_format
@@ -41,6 +48,7 @@ class OrbitalConfig < ApplicationRecord
     cityID: :city_id,
     locationName: :location_name,
     locationURL: :location_url,
+    whitelistEnabled: :whitelist_enabled,
     vehicleTypes: :vehicle_types,
     vehicleTypeNames: :vehicle_type_names,
     pickUpGeo: :pickup_area_geo,
@@ -52,9 +60,15 @@ class OrbitalConfig < ApplicationRecord
         ignoreQuota: :ignore_quota,
         cancelQuota: :cancel_quota,
         mercyPeriodInSec: :mercy_period_in_sec,
+        paxCancelNoPriorityEnabled: :pax_cancel_no_priority_enabled,
         paxCancelRecordTTLInSec: :pax_cancel_record_ttl_in_sec,
         remindSnoozeTimeInSec: :remind_snooze_time_in_sec,
         remindBeforeInSec: :remind_before_in_sec,
+        smsFallbackTriggeredErrorCount: :sms_fallback_triggered_error_count,
+        smsFallbackErrorCountResetInSec: :sms_fallback_error_count_reset_in_sec,
+        smsFallbackDurationInSec: :sms_fallback_duration_in_sec,
+        shortDistanceJobDistance: :short_distance_job_distance,
+        shortDistanceJobRecordTTLInSec: :short_distance_job_record_ttl_in_sec
     }
   }
 
