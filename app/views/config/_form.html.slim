@@ -17,6 +17,10 @@
           input_html: {value: display_value_for(:bay_area_geo) },
           hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
           placeholder: 'e.g. w22r61, w22r63'
+  = f.input :whitelist_enabled, placeholder: 'false', hint: 'If you set this field to true, you must set orbitalDaxWhitelist variable in ExP'
+  = f.input :pax_cancel_no_priority_enabled, placeholder: 'false', hint: 'When a pax-cancels, instead of moving driver to a separate priority queue, we put them back in their original spot in the main queue'
+  = f.input :short_distance_job_distance, placeholder: '0', hint: 'if last job in queue has a short distance(less than this value), dax will be in priority queue'
+  = f.input :short_distance_job_record_ttl_in_sec, placeholder: '0', hint: 'dax must return queue after he accepted last short job in this value time'
 
   .badge.badge-light Notification Frequency
   br
@@ -52,6 +56,15 @@
   = f.input :remind_before_in_sec,
           placeholder: 'Leave blank to use the default value: 180',
           hint: 'The time we send the 1st "Out of Queue Remind Message". If value is 300, we will send this 5 mins before "mercy period in sec" ends.'
+  = f.input :sms_fallback_triggered_error_count,
+          placeholder: 'Leave blank to use the default value: 3',
+          hint: 'error count needed to trigger fallback for dax in count reset time'
+  = f.input :sms_fallback_error_count_reset_in_sec,
+          placeholder: 'Leave blank to use the default value: 3600(1 hour)',
+          hint: 'error count will be reseted after seconds in this value passed'
+  = f.input :sms_fallback_duration_in_sec,
+          placeholder: 'Leave blank to use the default value: 86400(1 day)',
+          hint: 'how much time will fallback last in seconds'
 
   = f.hidden_field :uid
 
