@@ -73,7 +73,7 @@
   br
   br
   = f.input :short_distance_job_record_ttl_in_sec, placeholder: '0', hint: 'dax must return queue after he accepted last short job in this time value'
-  = f.input :short_distance_job_distance, placeholder: '0', hint: 'if last job in queue has a short distance(less than this value), dax will be directly put to the priority queue'
+  = f.input :short_distance_job_distance, placeholder: '0 meter', hint: 'if last job in queue has a short distance(less than this value unit is meter), dax will be directly put to the priority queue'
 
   = f.hidden_field :uid
 
