@@ -32,9 +32,6 @@ class OrbitalConfig < ApplicationRecord
   attribute :remind_snooze_time_in_sec, :integer, default: 180
   # When will the remind msg be sent if drivers are in danger of getting kicked out
   attribute :remind_before_in_sec, :integer, default: 180
-  attribute :sms_fallback_triggered_error_count, :integer, default: 3
-  attribute :sms_fallback_error_count_reset_in_sec, :integer, default: 3600
-  attribute :sms_fallback_duration_in_sec, :integer, default: 86400
   attribute :short_distance_job_distance, :float
   attribute :short_distance_job_record_ttl_in_sec, :integer
 
@@ -64,9 +61,6 @@ class OrbitalConfig < ApplicationRecord
         paxCancelRecordTTLInSec: :pax_cancel_record_ttl_in_sec,
         remindSnoozeTimeInSec: :remind_snooze_time_in_sec,
         remindBeforeInSec: :remind_before_in_sec,
-        smsFallbackTriggeredErrorCount: :sms_fallback_triggered_error_count,
-        smsFallbackErrorCountResetInSec: :sms_fallback_error_count_reset_in_sec,
-        smsFallbackDurationInSec: :sms_fallback_duration_in_sec,
         shortDistanceJobDistance: :short_distance_job_distance,
         shortDistanceJobRecordTTLInSec: :short_distance_job_record_ttl_in_sec
     }
