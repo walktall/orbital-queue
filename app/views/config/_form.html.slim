@@ -54,15 +54,6 @@
   = f.input :remind_before_in_sec,
           placeholder: 'Leave blank to use the default value: 180',
           hint: 'The time we send the 1st "Out of Queue Remind Message". If value is 300, we will send this 5 mins before "mercy period in sec" ends.'
-  = f.input :sms_fallback_triggered_error_count,
-          placeholder: 'Leave blank to use the default value: 3',
-          hint: 'Push/Inbox notification error threshold (in times), We will fall back to SMS if the error count goes greater than or equal to this threshold within a time window'
-  = f.input :sms_fallback_error_count_reset_in_sec,
-          placeholder: 'Leave blank to use the default value: 3600(1 hour)',
-          hint: 'The time window after which we will reset the error counter.'
-  = f.input :sms_fallback_duration_in_sec,
-          placeholder: 'Leave blank to use the default value: 86400(1 day)',
-          hint: 'how much time will fallback last in seconds'
 
   .badge.badge-light Short-Distance Job settings
   br
