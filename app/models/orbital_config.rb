@@ -2,12 +2,12 @@ class OrbitalConfig < ApplicationRecord
   attr_accessor :vehicle_types
 
   attribute :location_id, :integer
-  attribute :city_id, :integer
   attribute :location_name, :string
   # Used to get message configs from ucm
   attribute :message_config_id, :string
   attribute :location_url, :string
   attribute :vehicle_type_names, Types::ValuePair.new
+  attribute :vehicle_type_min_balances, Types::ValuePair.new
   attribute :pickup_area_geo, Types::GeohashArray.new
   attribute :bay_area_geo, Types::GeohashArray.new
   attribute :whitelist_enabled, :boolean
@@ -32,25 +32,22 @@ class OrbitalConfig < ApplicationRecord
   attribute :remind_snooze_time_in_sec, :integer, default: 180
   # When will the remind msg be sent if drivers are in danger of getting kicked out
   attribute :remind_before_in_sec, :integer, default: 180
-  attribute :sms_fallback_triggered_error_count, :integer, default: 3
-  attribute :sms_fallback_error_count_reset_in_sec, :integer, default: 3600
-  attribute :sms_fallback_duration_in_sec, :integer, default: 86400
   attribute :short_distance_job_distance, :float
   attribute :short_distance_job_record_ttl_in_sec, :integer
 
-  validates :location_id, :city_id, :location_name, :vehicle_type_names, :message_config_id, :pickup_area_geo, :bay_area_geo, presence: true
-  validate :geohashes_should_not_contain_invalid_chars, :vehicle_type_and_names_format, :queue_position_dynamic_multiple_format
+  validates :location_id, :location_name, :vehicle_type_names, :message_config_id, :pickup_area_geo, :bay_area_geo, presence: true
+  validate :geohashes_should_not_contain_invalid_chars, :vehicle_type_and_names_format, :vehicle_type_min_balances_format, :queue_position_dynamic_multiple_format
 
   # The key mapping of the json config keys to attributes
   # e.g.  { locID: :location_id } means the "locID" in the json config maps to attribute location_id
   JSON_KEY_MAP = {
     locID: :location_id,
-    cityID: :city_id,
     locationName: :location_name,
     locationURL: :location_url,
     whitelistEnabled: :whitelist_enabled,
     vehicleTypes: :vehicle_types,
     vehicleTypeNames: :vehicle_type_names,
+    minBalanceRequired: :vehicle_type_min_balances,
     pickUpGeo: :pickup_area_geo,
     bayAreaGeo: :bay_area_geo,
     messageConfigID: :message_config_id,
@@ -64,9 +61,6 @@ class OrbitalConfig < ApplicationRecord
         paxCancelRecordTTLInSec: :pax_cancel_record_ttl_in_sec,
         remindSnoozeTimeInSec: :remind_snooze_time_in_sec,
         remindBeforeInSec: :remind_before_in_sec,
-        smsFallbackTriggeredErrorCount: :sms_fallback_triggered_error_count,
-        smsFallbackErrorCountResetInSec: :sms_fallback_error_count_reset_in_sec,
-        smsFallbackDurationInSec: :sms_fallback_duration_in_sec,
         shortDistanceJobDistance: :short_distance_job_distance,
         shortDistanceJobRecordTTLInSec: :short_distance_job_record_ttl_in_sec
     }
@@ -199,6 +193,18 @@ class OrbitalConfig < ApplicationRecord
     end
   end
 
+  def vehicle_type_min_balances_format
+    return if !vehicle_type_min_balances || vehicle_type_min_balances.is_a?(Hash)
+    begin
+      JSON.parse(value_from_user_input(:vehicle_type_min_balances))
+    rescue Exception => e
+      errors.add(:vehicle_type_min_balances, 'is invalid, JSON parsing error: ' + e.to_s)
+    end
+
+    if !vehicle_type_min_balances.is_a?(Hash) && errors[:vehicle_type_min_balances].empty?
+      errors.add(:vehicle_type_min_balances, 'is invalid, must be in the format of "vehicle type id": 1000')
+    end
+  end
 
   def queue_position_dynamic_multiple_format
     return if !queue_position_dynamic_multiple

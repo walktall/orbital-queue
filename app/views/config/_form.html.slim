@@ -1,5 +1,4 @@
 = simple_form_for @config, url: config_index_path, method: :post do |f|
-  = f.input :city_id, label: 'City ID', hint: 'City ID on Gamma', required: true
   = f.input :location_id, label: 'Location ID', as: :integer, required: true,
           placeholder: "Can be any unique positive integer, as long as it's unique among all the locations", hint: 'check existing location ids in https://wiki.grab.com/display/GEO/Orbital+Queue+Config'
   = f.input :location_name, required: true, placeholder: 'e.g. KLIA', hint: 'Your custom location name, this will be used in message sent to dax, so be sure to use native language here'
@@ -9,6 +8,10 @@
           input_html: { value: display_value_for(:vehicle_type_names) },
           placeholder: 'e.g. "302": "JustGrab - Airport", "400": "Taxi - Airport"',
           hint: 'Comma separated pairs with taxi type ID and taxi type name. The name will be used in the notifications.'
+  = f.input :vehicle_type_min_balances, label: 'Vehicle type and minimal balance required',
+          input_html: { value: display_value_for(:vehicle_type_min_balances) },
+          placeholder: 'e.g. "302": 1000, "400": 2000',
+          hint: 'Comma separated pairs with taxi type ID and taxi type minimal balance required. Drivers does not have minimal balance will not be able to enqueue'
   = f.input :pickup_area_geo, required: true,
           input_html: { value: display_value_for(:pickup_area_geo) },
           hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
@@ -54,15 +57,6 @@
   = f.input :remind_before_in_sec,
           placeholder: 'Leave blank to use the default value: 180',
           hint: 'The time we send the 1st "Out of Queue Remind Message". If value is 300, we will send this 5 mins before "mercy period in sec" ends.'
-  = f.input :sms_fallback_triggered_error_count,
-          placeholder: 'Leave blank to use the default value: 3',
-          hint: 'Push/Inbox notification error threshold (in times), We will fall back to SMS if the error count goes greater than or equal to this threshold within a time window'
-  = f.input :sms_fallback_error_count_reset_in_sec,
-          placeholder: 'Leave blank to use the default value: 3600(1 hour)',
-          hint: 'The time window after which we will reset the error counter.'
-  = f.input :sms_fallback_duration_in_sec,
-          placeholder: 'Leave blank to use the default value: 86400(1 day)',
-          hint: 'how much time will fallback last in seconds'
 
   .badge.badge-light Short-Distance Job settings
   br
