@@ -62,4 +62,4 @@ gem 'clipboard-rails'
 gem 'jquery-rails'
 
 # For heroku
-ruby "2.5.1"
+ruby "2.6.2"
