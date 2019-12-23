@@ -1,7 +1,7 @@
 - json = @config ? @config.serialize_to_json : ""
 
 
-= simple_form_for :config, url: new_config_path, method: :get do |f|
+= simple_form_for :config, url: reload_config_path, method: :post do |f|
   = f.input :json, label: false, required: false, as: :text,
           placeholder: 'Paste the generated JSON here',
           input_html: {value: json, rows: json.present? ? json.lines.count : 15}

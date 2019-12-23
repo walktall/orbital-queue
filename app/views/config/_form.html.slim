@@ -14,14 +14,13 @@
           hint: 'Comma separated pairs with taxi type ID and taxi type minimal balance required. Drivers does not have minimal balance will not be able to enqueue'
   = f.input :pickup_area_geo, required: true,
           input_html: { value: display_value_for(:pickup_area_geo) },
-          hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
+          hint: 'Comma separated geohash strings, max geohash level 12, you can also combine different levels of geohash',
           placeholder: 'e.g. w22r96, w22r97'
   = f.input :bay_area_geo, required: true,
           input_html: {value: display_value_for(:bay_area_geo) },
-          hint: 'Comma separated geohash strings, recommended to be geohash level 6 or level 7',
+          hint: 'Comma separated geohash strings, max geohash level 12, you can also combine different levels of geohash',
           placeholder: 'e.g. w22r61, w22r63'
   = f.input :whitelist_enabled, placeholder: 'false', hint: 'If you set this field to true, you must set orbitalDaxWhitelist variable in ExP'
-  = f.input :pax_cancel_no_priority_enabled, placeholder: 'false', hint: 'By default, after pax cancelled a booking, the driver will be put into a priority queue. With this option enabled, drivers will be put to the original position of the queue instead.'
 
   .badge.badge-light Notification Frequency
   br
@@ -48,9 +47,6 @@
   = f.input :mercy_period_in_sec,
           placeholder: 'Leave blank to use the default value: 300',
           hint: 'Number of seconds after the driver turn off app or moved out of the bay area to be moved to the end of queue position'
-  = f.input :pax_cancel_record_ttl_in_sec,
-          placeholder: 'Leave blank to use the default value: 900',
-          hint: 'Number of seconds for dax to come back to bay area after pax cancels'
   = f.input :remind_snooze_time_in_sec,
           placeholder: 'Leave blank to use the default value: 60',
           hint: 'If value is 180, when driver turn off app or moved out of bay area, driver will get the "Out Of Queue Remind Message" every 3 mins after receiving the first "Out of Queue Remind Message"'
@@ -69,7 +65,21 @@
   = f.input :short_distance_job_record_ttl_in_sec, placeholder: '0', hint: 'dax must return queue after he accepted last short job in this time value'
   = f.input :short_distance_job_distance, placeholder: '0 meter', hint: 'if last job in queue has a short distance(less than this value unit is meter), dax will be directly put to the priority queue'
 
+  .badge.badge-light B2BJ settings
+  br
+  br
+  .text When driver first enters the queue waiting area, the following additional check should be done -
+  .text Is the driver's last completed job (a) was completed within the last Z (= 60 default) mins, and (b) had dropoff within area Y, and (c) had trip length of > X ms
+  .text If not, put them in the other queues (main queue or short distance job queue) as normal.
+  .text If so, put them in this b2bj queue.
+  br
+  br
+  = f.input :b2bj_area_geo, required: false,
+          input_html: {value: display_value_for(:b2bj_area_geo) },
+          hint: 'Comma separated geohash strings, max geohash level 12, you can also combine different levels of geohash, Note that this cannot be overlapped with bay area geohash',
+          placeholder: 'e.g. w22r61, w22r63'
+  = f.input :b2bj_record_ttl_in_sec, placeholder: '0', hint: 'last completed job was completed within the last Z (= 60 default) mins'
+  = f.input :b2bj_distance, placeholder: '0 meter', hint: 'last completed job had trip length of > X ms'
   = f.hidden_field :uid
 
   = f.button :submit, 'Generate', class: 'btn-success'
-

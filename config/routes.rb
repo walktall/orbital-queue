@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
 
   get '/config/new', to: 'config#new', as: 'new_config'
+  post '/config/reload', to: 'config#reload', as: 'reload_config'
   get '/config/restore', to: 'config#restore', as: 'restore_config'
   get '/config/:uid/:version/edit', to: 'config#edit', as: 'edit_config_version'
   get '/config/:uid/edit', to: 'config#edit', as: 'edit_config'

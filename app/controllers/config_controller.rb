@@ -8,6 +8,13 @@ class ConfigController < ApplicationController
     end
   end
 
+  def reload
+    @config = OrbitalConfig.new
+    if params[:config] && valid_json?(params[:config][:json])
+      @config.deserialize_from_json(params[:config][:json])
+    end
+  end
+
   def edit
     @config = load_config
   end
